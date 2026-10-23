@@ -30,7 +30,7 @@
      "//components/search_engines",
      "//components/security_interstitials/content:security_interstitial_page",
      "//components/signin/public/identity_manager",
-@@ -3556,7 +3555,6 @@ group("ui_public_dependencies") {
+@@ -3558,7 +3557,6 @@ group("ui_public_dependencies") {
      "//components/dom_distiller/core",
      "//components/enterprise/buildflags",
      "//components/paint_preview/buildflags",
