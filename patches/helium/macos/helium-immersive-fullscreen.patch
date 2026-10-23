@@ -513,7 +513,7 @@
    bool zen_mode_enabled_ = false;
 +  // Ignore hover changes during native macOS fullscreen transitions.
 +  bool zen_reveal_paused_ = false;
-+  bool was_collapsed_before_sidebar_address_bar_ = false;
+   bool was_collapsed_before_sidebar_address_bar_ = false;
  
    mutable base::WeakPtrFactory<BrowserView> weak_ptr_factory_{this};
  };
