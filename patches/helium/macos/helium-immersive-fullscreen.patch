@@ -29,7 +29,7 @@
  
  @synthesize thinTitlebarViewController = _thinTitlebarViewController;
  
-@@ -217,4 +223,48 @@ WEAK_IMPORT_ATTRIBUTE
+@@ -217,5 +223,48 @@ WEAK_IMPORT_ATTRIBUTE
        setAlwaysShowTrafficLights:alwaysShow];
  }
  
@@ -507,7 +507,7 @@
  }
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
-@@ -1501,6 +1501,8 @@ class BrowserView : public BrowserWindow
+@@ -1501,6 +1501,9 @@ class BrowserView : public BrowserWindow
    base::OneShotTimer zen_cursor_exit_timer_;
    std::optional<gfx::Point> zen_last_cursor_;
    bool zen_mode_enabled_ = false;
