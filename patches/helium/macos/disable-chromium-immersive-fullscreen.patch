@@ -44,7 +44,7 @@
            base::BindRepeating(
 --- a/chrome/browser/ui/browser_command_controller.cc
 +++ b/chrome/browser/ui/browser_command_controller.cc
-@@ -2572,8 +2572,7 @@ void BrowserCommandController::UpdateCom
+@@ -2578,8 +2578,7 @@ void BrowserCommandController::UpdateCom
  #endif
  
    command_updater_->UpdateCommandEnabled(IDC_FULLSCREEN, fullscreen_enabled);
