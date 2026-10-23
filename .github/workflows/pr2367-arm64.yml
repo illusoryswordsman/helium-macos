@@ -2,6 +2,14 @@ name: Build Helium PR 2367 for Apple Silicon
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - pr2367-cloud-build
+    paths:
+      - '.github/actions/do-build/action.yml'
+      - '.github/workflows/pr2367-arm64.yml'
+      - 'patches/series'
+      - 'patches/helium/macos/**'
 
 permissions:
   contents: write
