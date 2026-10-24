@@ -8,6 +8,7 @@ on:
     paths:
       - '.github/actions/do-build/action.yml'
       - '.github/workflows/pr2367-arm64.yml'
+      - 'flags.macos.gn'
       - 'patches/series'
       - 'patches/helium/macos/**'
 
