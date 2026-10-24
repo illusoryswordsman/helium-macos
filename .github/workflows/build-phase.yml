@@ -28,6 +28,10 @@ jobs:
   build_job:
     name: Build Helium for macOS
     runs-on: ${{ inputs.os }}
+    # Avoid hard failures when GitHub's remote Actions cache service is unavailable.
+    # sccache falls back to its local disk cache when the GHA backend is disabled.
+    env:
+      SCCACHE_GHA_ENABLED: "off"
     outputs:
       status: ${{ steps.build.outputs.status }}
     steps:
