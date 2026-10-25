@@ -19,14 +19,28 @@ if [ -f "$_root_dir/build_finished_$_target_cpu.log" ]; then
 
   xattr -cs out/Default/Helium.app
 
-  # Prepar the certificate for app signing
-  echo $MACOS_CERTIFICATE | base64 --decode > "$TMPDIR/certificate.p12"
+  # Use a signing identity only when the complete signing/notarization credentials exist.
+  # Otherwise, create an ad-hoc-signed DMG so a successful source build can still be
+  # packaged and checkpointed on forks without Apple Developer secrets.
+  if [ -n "${MACOS_CERTIFICATE:-}" ] &&
+     [ -n "${MACOS_CERTIFICATE_PWD:-}" ] &&
+     [ -n "${MACOS_CI_KEYCHAIN_PWD:-}" ] &&
+     [ -n "${MACOS_CERTIFICATE_NAME:-}" ] &&
+     [ -n "${PROD_MACOS_NOTARIZATION_APPLE_ID:-}" ] &&
+     [ -n "${PROD_MACOS_NOTARIZATION_TEAM_ID:-}" ] &&
+     [ -n "${PROD_MACOS_NOTARIZATION_PWD:-}" ]; then
+    echo "$MACOS_CERTIFICATE" | base64 --decode > "$TMPDIR/certificate.p12"
 
-  security create-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain
-  security default-keychain -s build.keychain
-  security unlock-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain
-  security import "$TMPDIR/certificate.p12" -k build.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
-  security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$MACOS_CI_KEYCHAIN_PWD" build.keychain
+    security create-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain
+    security default-keychain -s build.keychain
+    security unlock-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain
+    security import "$TMPDIR/certificate.p12" -k build.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
+    security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$MACOS_CI_KEYCHAIN_PWD" build.keychain
+  else
+    echo "warn: signing/notarization credentials unavailable; packaging an ad-hoc-signed DMG" >&2
+    unset MACOS_CERTIFICATE MACOS_CERTIFICATE_PWD MACOS_CI_KEYCHAIN_PWD MACOS_CERTIFICATE_NAME
+    unset PROD_MACOS_NOTARIZATION_APPLE_ID PROD_MACOS_NOTARIZATION_TEAM_ID PROD_MACOS_NOTARIZATION_PWD
+  fi
 
   if ! [ -z "${PROD_MACOS_SPECIAL_ENTITLEMENTS_PROFILE_B64:-}" ]; then
     export PROD_MACOS_SPECIAL_ENTITLEMENTS_PROFILE_PATH=$(mktemp)
