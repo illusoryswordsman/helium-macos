@@ -13,10 +13,22 @@ on:
       - 'patches/helium/macos/**'
 
 permissions:
+  actions: read
   contents: write
 
 jobs:
+  # Resume from the last successful checkpoint for the download-bubble API fix.
+  resume_from_checkpoint:
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[resume-run-40103238639]') }}
+    uses: ./.github/workflows/building.yml
+    secrets: inherit
+    with:
+      arch: arm64
+      os: macos-latest
+      resume_run_id: '40103238639'
+
   build:
+    if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, '[resume-run-40103238639]') }}
     uses: ./.github/workflows/building.yml
     secrets: inherit
     with:

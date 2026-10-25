@@ -1,0 +1,21 @@
+--- a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h
++++ b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h
+@@ -78,6 +78,7 @@
+   void ShowDetails() override;
+   void HideDetails() override;
+   bool IsShowingDetails() const override;
++  bool HasOpenOrPendingBubble() const;
+   void AnnounceAccessibleAlertNow(const std::u16string& alert_text) override;
+--- a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
++++ b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
+@@ -637,6 +637,10 @@
+ bool DownloadToolbarUIController::IsShowingDetails() const {
+   return bubble_delegate_ != nullptr &&
+          bubble_delegate_->GetWidget()->IsVisible();
+ }
+ 
++bool DownloadToolbarUIController::HasOpenOrPendingBubble() const {
++  return bubble_delegate_ != nullptr || pending_bubble_;
++}
++
+ void DownloadToolbarUIController::OnOfflineItemsInitialized() {
