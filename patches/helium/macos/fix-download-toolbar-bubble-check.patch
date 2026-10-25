@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h
 +++ b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h
-@@ -78,6 +78,7 @@
+@@ -78,4 +78,5 @@
    void ShowDetails() override;
    void HideDetails() override;
    bool IsShowingDetails() const override;
